@@ -1,0 +1,2 @@
+class UserDoc < ApplicationRecord
+end
