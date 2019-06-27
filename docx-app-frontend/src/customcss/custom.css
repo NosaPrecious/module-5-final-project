@@ -1,0 +1,17 @@
+.thumbnail{
+  width: 100px;
+  height: 100px;
+}
+
+.mycard{
+  width: 12rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 2%;
+  box-shadow: 10px 10px 8px 10px #a6a6a6;
+}
+
+.mytextarea{
+  height: 200px;
+  width: 400px;
+
+}
