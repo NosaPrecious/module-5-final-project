@@ -2,9 +2,15 @@ import React, {Fragment} from 'react'
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button'
 import '../customcss/custom.css'
-import {Link} from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
+import {withRouter} from 'react-router'
 
-function DocumentCard(){
+const DocumentCard= (props) => {
+
+  let handleClick= (event) => {
+    return <Redirect to={`/profile/${1}`} />
+  }
+
   return (
     <Fragment>
     <br/>
@@ -17,9 +23,10 @@ function DocumentCard(){
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
               </Card.Text>
-              <Link to={'/profile/textEditor'}>
-              <Button variant="primary">Open</Button>
-              </Link>
+              <Button
+              variant="primary"
+              onClick={handleClick}
+              >Open</Button>
               </Card.Body>
             </Card>
 
@@ -27,4 +34,4 @@ function DocumentCard(){
   )
 }
 
-export default DocumentCard
+export default withRouter(DocumentCard)

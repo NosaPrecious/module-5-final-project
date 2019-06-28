@@ -6,6 +6,7 @@ class Api::V1::AuthsController < ApplicationController
           # user was found
           payload = {userId: @user.id}
           token = encode(payload)
+          # byebug
           render json: {
             user: @user,
             token: token,

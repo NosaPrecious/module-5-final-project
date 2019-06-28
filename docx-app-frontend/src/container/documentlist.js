@@ -5,11 +5,12 @@ import DocumentCard from '../components/documentcard'
 class DocumentList extends React.Component{
 
   render(){
+    debugger
     return(
       <Fragment>
         This is the Document List Page
         <CardGroup>
-          <DocumentCard />
+          <DocumentCard routeprops={this.props.routeprops}/>
         </CardGroup>
       </Fragment>
     )

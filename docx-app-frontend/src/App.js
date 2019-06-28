@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container'
 import Login  from './container/login.js'
 import UserPage from './container/userpage.js'
 import EditPage from './container/edit.js'
-import Registration from './container/register.js'
+// import Registration from './container/register.js'
 import NotFound from './container/not_found.js'
 
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
@@ -34,24 +34,24 @@ class App extends React.Component{
       .then(resp => resp.json())
       .then(data => {
         this.handleUpdateUser(data)
-        this.setState({
-          loading: false
-        })
+        this.setState({loading: false})
       })
     }else{
-      this.setState({
-        loading: false
-      })
+      this.setState({loading: false})
     }
   }
 
   handleUpdateUser = (currentUser) => {
-    this.setState({currentUser : currentUser})
+    this.setState({currentUser : currentUser}, console.log(this.state.currentUser))
   }
 
-  showProfile = () => this.state.loading ? null : (
+  showProfile = (props) => this.state.loading ? null : (
     this.state.currentUser ? <UserPage
-    user= {this.state.currentUser}/> : <Redirect to="/login"/>
+    user= {this.state.currentUser}
+    handleUpdateUser={this.handleUpdateUser}
+    routeprops = {props}
+
+    /> : <Redirect to="/login"/>
   )
 
   showLogIn = () => this.state.loading ? null : (
@@ -59,15 +59,20 @@ class App extends React.Component{
     <Login handleUpdateUser={this.handleUpdateUser} />
   )
 
+  showEditPage = (props) => {
+    return this.state.currentUser? <EditPage routeprops={props} /> : <Redirect to="/login"/>
+  }
+
   render(){
     return (
       <Fragment>
       <Container>
       <Switch>
-        <Route exact path="/" render={() => <Redirect to="/profile" />} />
-        <Route exact path='/profile' render= {this.showProfile} />
+        <Route exact path='profile/:id' render={(props) => this.showEditPage} />
+        <Route exact path='/profile' render= {(props) =>{ return this.showProfile(props)
+        } }/>
         <Route exact path='/login' render= {this.showLogIn} />
-
+        <Route exact path="/" render={() => <Redirect to="/profile" />} />
         <Route component={NotFound} />
       </Switch>
       </Container>

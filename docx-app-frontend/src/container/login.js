@@ -4,6 +4,7 @@ import Col from  'react-bootstrap/Col'
 // import Row from  'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router'
 
 class Login extends React.Component{
   constructor(){
@@ -34,7 +35,6 @@ class Login extends React.Component{
       })
     }).then(resp => resp.json())
     .then(data => {
-      debugger
       if(data.authenticated){
 
         this.props.handleUpdateUser(data.user)
@@ -49,7 +49,11 @@ class Login extends React.Component{
     return(
       <Fragment>
         <h2>Welcome to the Login Page</h2>
-          <Form onSubmit={this.handleLoginSubmit}>
+          <Form
+          onSubmit={this.handleLoginSubmit}
+          loading={this.props.authenticatingUser}
+          error={this.props.failedLogin}
+          >
             <Form.Group controlId="formPlaintextUsername">
               <Form.Label column sm="2">
               Username :
@@ -92,4 +96,4 @@ class Login extends React.Component{
   }
 }
 
-export default Login
+export default withRouter(Login)
