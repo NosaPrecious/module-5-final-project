@@ -1,12 +1,11 @@
 import React, {Fragment} from 'react'
 
 
-function SortBy(){
+function NotFound(){
   return(
     <Fragment>
-      <div>
-
-      </div>
+        404 Route not found!!!
     </Fragment>
   )
 }
+export default NotFound

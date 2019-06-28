@@ -8,4 +8,4 @@
 
 User.destroy_all
 
-User.find_or_create_by(first_name: "Nosa", last_name: "okundaye", email: "nok@gmail.co", password: "abc123", username: "nosbaba")
+User.create!(first_name: "Nosa", last_name: "okundaye", email: "nok@gmail.co", username: "nosbaba", password: "abc123")

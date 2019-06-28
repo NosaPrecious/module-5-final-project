@@ -1,6 +1,8 @@
 import React, {Fragment} from 'react'
 import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
 import '../customcss/custom.css'
+import {Link} from 'react-router-dom'
 
 function DocumentCard(){
   return (
@@ -15,8 +17,9 @@ function DocumentCard(){
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
               </Card.Text>
-              <Card.Link href="#">Card Link</Card.Link>
-              <Card.Link href="#">Another Link</Card.Link>
+              <Link to={'/profile/textEditor'}>
+              <Button variant="primary">Open</Button>
+              </Link>
               </Card.Body>
             </Card>
 

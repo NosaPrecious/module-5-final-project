@@ -1,2 +1,0 @@
-class UserDocsController < ApplicationController
-end
