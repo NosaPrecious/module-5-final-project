@@ -11,7 +11,29 @@ import Logout from '../components/logout'
 // import {Route, Switch} from 'react-router-dom'
 
 class UserPage extends React.Component{
+
+  constructor(props){
+    super(props)
+    debugger
+    this.state ={
+      searchText: "",
+      sort_value: "",
+      doc_content: null,
+      docArr : []
+    }
+  }
+
+  componentDidMount(){
+    debugger
+    // console.log("component did mount user profile page", this.props)
+    this.setState({
+      docArr: [...this.state.docArr, this.props.user.docs]
+    })
+  }
+
+
   render(){
+    // console.log(this.props.user)
     return(
       <Fragment>
         Welcome {this.props.user.first_name}<br/>
@@ -25,9 +47,14 @@ class UserPage extends React.Component{
             <Col><SearchBar /></Col>
           </Row>
           <Row>
-          <UploadFile />
+          <UploadFile
+            user= {this.props.user}
+          />
           </Row>
-          <DocumentList routeprops={this.props.routeprops} /><br/>
+          <DocumentList
+          routeprops={this.props.routeprops}
+          documentArr={this.state.docArr}
+          /><br/>
         </Container>
       </Fragment>
     )

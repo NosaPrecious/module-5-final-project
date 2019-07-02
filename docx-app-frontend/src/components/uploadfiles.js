@@ -1,10 +1,50 @@
 import React, {Fragment} from 'react'
 
 
-function UploadFile(){
+const UploadFile= (props) => {
+  // console.log(props.user)
+  let handleUpload = (event) => {
+    event.stopPropagation()
+    event.preventDefault()
+    // debugger
+    let uploadedFile= event.target.children[0].files[0]
+    fileProcessor(uploadedFile)
+
+  }
+
+  let fileProcessor = (fileObj) => {
+    debugger
+    if(window.File && window.FileReader && window.Blob){
+    let fr = new FileReader()
+
+    fr.onload = (frEvent) => {
+      // let myBlob= new Blob([frEvent.target.result], {type:"text/plain;charset=utf-8"})
+       debugger
+      let myDocContainer = document.querySelector('.myDocList')
+        myDocContainer.innerHTML = frEvent.target.result
+      // debugger
+    }
+      fr.readAsBinaryString(fileObj)
+    }else{
+      alert("The File API is not supported by your browser.")
+    }
+  }
+
   return (
     <Fragment>
-    Upload File Input<br/>
+    <div className="input-file-group">
+      <div className="custom-file-input">
+      <form onSubmit={handleUpload}>
+      <input
+      type="file"
+      className="file-input"
+      id="file-input"
+      />
+      <br/>
+      <input type="submit" value="submit"/>
+      </form>
+      </div>
+      </div>
     </Fragment>
   )
 }

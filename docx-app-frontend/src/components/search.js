@@ -1,10 +1,13 @@
 import React, {Fragment} from 'react'
+import Form from 'react-bootstrap/Form'
 
 
 function SearchBar(){
   return (
     <Fragment>
-    Search Input Bar<br/>
+    <Form>
+      <Form.Control className="search" type="text" placeholder="Search"/>
+    </Form>
     </Fragment>
   )
 }

@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container'
 
 import Login  from './container/login.js'
 import UserPage from './container/userpage.js'
-import EditPage from './container/edit.js'
+import EditPage from './components/texteditor.js'
 // import Registration from './container/register.js'
 import NotFound from './container/not_found.js'
 
@@ -26,7 +26,9 @@ class App extends React.Component{
   componentDidMount(){
     let token= localStorage.getItem("token")
     if(token){
+      debugger
       fetch("http://localhost:3001/api/v1/profile", {
+        method: "GET",
         headers: {
           "Authentication" : `Bearer ${token}`
         }
@@ -42,7 +44,7 @@ class App extends React.Component{
   }
 
   handleUpdateUser = (currentUser) => {
-    this.setState({currentUser : currentUser}, console.log(this.state.currentUser))
+    this.setState({currentUser : currentUser})
   }
 
   showProfile = (props) => this.state.loading ? null : (
@@ -68,8 +70,9 @@ class App extends React.Component{
       <Fragment>
       <Container>
       <Switch>
-        <Route exact path='profile/:id' render={(props) => this.showEditPage} />
-        <Route exact path='/profile' render= {(props) =>{ return this.showProfile(props)
+        <Route exact path='/profile/:id' component={EditPage} />
+        <Route exact path='/profile' render= {(props) =>{
+          return this.showProfile(props)
         } }/>
         <Route exact path='/login' render= {this.showLogIn} />
         <Route exact path="/" render={() => <Redirect to="/profile" />} />
