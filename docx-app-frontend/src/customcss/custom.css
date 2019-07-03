@@ -3,11 +3,27 @@
   height: 100px;
 }
 
+
+
+.myDocList{
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  flex-wrap:wrap;
+  justify-content: center;
+  align-items: baseline;
+  align-content: center;
+}
+
 .mycard{
-  width: 12rem;
+  width: 20%;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-left: 10px;
   border: 1px solid #e6e6e6;
   border-radius: 2%;
-  box-shadow: 10px 10px 8px 10px #a6a6a6;
+  box-shadow: 10px 10px 10px 3px #a6a6a6;
+
 }
 
 .my-text-editor{

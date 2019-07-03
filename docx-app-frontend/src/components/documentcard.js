@@ -7,23 +7,26 @@ import {withRouter} from 'react-router'
 
 const DocumentCard= (props) => {
   // debugger
-  let handleClick= (event) => <Link to="/textEditor" />
+   // console.log(props)
+   const{docObj, onRouteHandler} = props
+   // let fileName = docObj.filename.slice(-10)
 
   return (
     <Fragment>
     <br/>
-          <Card className="mycard">
+          <Card className="justify-content-center mycard">
               <Card.Body>
-              <Card.Title>Card Title</Card.Title>
-              <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
               <Card.Img className="thumbnail" variant="top" src="./thumbnail.png" />
               <Card.Text>
-                Content Type: 
+                Content Type: {docObj.content_type}
               </Card.Text>
+              <Link to={`/profile/${docObj.id}`}>
               <Button
+              data-doc-id={docObj.id}
               variant="primary"
-              onClick={handleClick}
+              onClick={onRouteHandler}
               >Open</Button>
+              </Link>
               <Button
               variant="primary"
               >Delete</Button>

@@ -14,7 +14,7 @@ class UserPage extends React.Component{
 
   constructor(props){
     super(props)
-    debugger
+    // debugger
     this.state ={
       searchText: "",
       sort_value: "",
@@ -23,13 +23,13 @@ class UserPage extends React.Component{
     }
   }
 
-  componentDidMount(){
-    debugger
-    // console.log("component did mount user profile page", this.props)
-    this.setState({
-      docArr: [...this.state.docArr, this.props.user.docs]
-    })
-  }
+  // componentDidMount(){
+  //   // debugger
+  //   // console.log("component did mount user profile page", this.props)
+  //   this.setState({
+  //     docArr: [...this.state.docArr, this.props.user.docs]
+  //   })
+  // }
 
 
   render(){
@@ -44,7 +44,9 @@ class UserPage extends React.Component{
             handleUpdateUser={this.props.handleUpdateUser}
              />
             </Col>
-            <Col><SearchBar /></Col>
+            <Col>
+            <SearchBar />
+            </Col>
           </Row>
           <Row>
           <UploadFile
@@ -53,7 +55,8 @@ class UserPage extends React.Component{
           </Row>
           <DocumentList
           routeprops={this.props.routeprops}
-          documentArr={this.state.docArr}
+          userObj={this.props.user}
+          onRouteHandler={this.props.onRouteHandler}
           /><br/>
         </Container>
       </Fragment>

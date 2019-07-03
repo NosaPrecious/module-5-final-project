@@ -7,13 +7,13 @@ import {Link} from 'react-router-dom'
 
 
 function TextEditor(props){
-  // debugger
+  const{currentDoc}=props
   return(
     <Fragment>
       <div style={{marginTop: "10%", marginRight:"50%", marginButtom:"75%",marginLeft: "35%"}}>
           <div className="my-text-editor"
           contentEditable="true">
-          {"Hello world"}
+          {currentDoc.data}
           </div>
          <Link to="/profile">
           <Button variant="primary">

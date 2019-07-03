@@ -35,6 +35,7 @@ class Login extends React.Component{
       })
     }).then(resp => resp.json())
     .then(data => {
+      debugger
       if(data.authenticated){
 
         this.props.handleUpdateUser(data.user)
@@ -88,7 +89,7 @@ class Login extends React.Component{
                 </Button>
               </Form>
               {" -- or -- "}<br/>
-              <Link to={'/user_registration'}>
+              <Link to={'/register_as_user'}>
               <Button variant="primary">Register as a new user</Button>
               </Link>
       </Fragment>

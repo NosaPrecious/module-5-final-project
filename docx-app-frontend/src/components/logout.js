@@ -4,8 +4,8 @@ import {withRouter} from 'react-router'
 import {Redirect} from 'react-router-dom'
 
 const Logout= (props) => {
+
 let handleClick= (event) =>{
-  // console.log(event.target.type)
   localStorage.removeItem("token")
   props.handleUpdateUser(null)
   return <Redirect to="/login"/>

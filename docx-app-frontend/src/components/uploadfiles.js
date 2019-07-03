@@ -13,13 +13,13 @@ const UploadFile= (props) => {
   }
 
   let fileProcessor = (fileObj) => {
-    debugger
+    // debugger
     if(window.File && window.FileReader && window.Blob){
     let fr = new FileReader()
 
     fr.onload = (frEvent) => {
       // let myBlob= new Blob([frEvent.target.result], {type:"text/plain;charset=utf-8"})
-       debugger
+       // debugger
       let myDocContainer = document.querySelector('.myDocList')
         myDocContainer.innerHTML = frEvent.target.result
       // debugger

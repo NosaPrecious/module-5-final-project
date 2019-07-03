@@ -4,11 +4,12 @@ class Api::V1::AuthsController < ApplicationController
       @user= User.find_by(username: params[:username])
       if @user && @user.authenticate(params[:password])
           # user was found
+          serialized_user= UserSerializer.new(@user).as_json
+          # byebug
           payload = {userId: @user.id}
           token = encode(payload)
-          # byebug
           render json: {
-            user: @user,
+            user: serialized_user,
             token: token,
             authenticated: true
           }, status: :ok

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
         resource :docs
         post '/login', to: 'auths#create'
         get '/profile', to: 'users#profile'
-        # get '/users/:id', to: 'users#show'
+        get '/users/:id', to: 'users#show'
       end
     end
 end
