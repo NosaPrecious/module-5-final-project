@@ -3,10 +3,12 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
         resource :users, only: [:create]
-        resource :docs
+        resource :docs, only: [:destroy, :put]
         post '/login', to: 'auths#create'
         get '/profile', to: 'users#profile'
         get '/users/:id', to: 'users#show'
+        delete "/docs/:id", to: 'docs#destroy'
+        put "/docs/:id", to: 'docs#update'
       end
     end
 end

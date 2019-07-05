@@ -1,14 +1,15 @@
 import React, {Fragment} from 'react'
 // import EditPage from '../container/edit.js'
+// import UploadFile from '../components/uploadfiles.js'
 import DocumentList from '../container/documentlist.js'
 import SearchBar from '../components/search.js'
-import UploadFile from '../components/uploadfiles.js'
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 import Logout from '../components/logout'
-// import {Route, Switch} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 class UserPage extends React.Component{
 
@@ -23,17 +24,16 @@ class UserPage extends React.Component{
     }
   }
 
-  // componentDidMount(){
-  //   // debugger
-  //   // console.log("component did mount user profile page", this.props)
-  //   this.setState({
-  //     docArr: [...this.state.docArr, this.props.user.docs]
-  //   })
-  // }
+  onSearchHandler = event => {
+    this.setState({
+      searchText: event.target.value
+    })
+  }
+
 
 
   render(){
-    // console.log(this.props.user)
+
     return(
       <Fragment>
         Welcome {this.props.user.first_name}<br/>
@@ -45,18 +45,27 @@ class UserPage extends React.Component{
              />
             </Col>
             <Col>
-            <SearchBar />
+            <SearchBar
+              onSearchHandler={this.onSearchHandler}
+              value={this.state.searchText}
+             />
             </Col>
           </Row>
           <Row>
-          <UploadFile
-            user= {this.props.user}
-          />
+          <Link to="/profile/textEditor">
+              <Button
+              variant="primary"
+              className="new_document"
+              onClick={this.props.handleCreateNewDocument}>
+              Create new document
+              </Button>
+          </Link>
           </Row>
           <DocumentList
-          routeprops={this.props.routeprops}
           userObj={this.props.user}
           onRouteHandler={this.props.onRouteHandler}
+          searchText={this.state.searchText}
+          handleDocumentDelete={this.props.handleDocumentDelete}
           /><br/>
         </Container>
       </Fragment>

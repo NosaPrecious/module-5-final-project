@@ -35,7 +35,7 @@ class Login extends React.Component{
       })
     }).then(resp => resp.json())
     .then(data => {
-      debugger
+      // debugger
       if(data.authenticated){
 
         this.props.handleUpdateUser(data.user)

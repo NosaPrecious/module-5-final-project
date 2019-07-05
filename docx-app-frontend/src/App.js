@@ -12,6 +12,7 @@ import NotFound from './container/not_found.js'
 
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 
+// let editedText, copyArr, updateDocObj, idx, splittedArr, nDocObj
 
 class App extends React.Component{
 
@@ -20,11 +21,11 @@ class App extends React.Component{
     this.state={
       currentUser: null,
       selectedDocument: null,
-      docArr: [],
       loading: true
     }
   }
 
+  //This makes the fetch request to authenticate the currentUser
   componentDidMount(){
     let token= localStorage.getItem("token")
     if(token){
@@ -45,21 +46,22 @@ class App extends React.Component{
     }
   }
 
+  //This redirect the current user to the profile based
+  // on if he or she is login or logout
   handleUpdateUser = (currentUser) => {
-    debugger
+    // debugger
     if(currentUser == null){
       this.setState({
-      currentUser : currentUser,
+      currentUser : currentUser
     })
   }else{
-      let updatedDocArr = [...this.state.docArr, ...currentUser.docs]
         this.setState({
-          currentUser : currentUser,
-          docArr : updatedDocArr
+          currentUser : currentUser
       })
     }
   }
 
+  //This display the user profile page
   showProfile = (props) => this.state.loading ? null : (
     this.state.currentUser ? <UserPage
     user= {this.state.currentUser}
@@ -67,43 +69,122 @@ class App extends React.Component{
     docArr={this.state.docArr}
     onRouteHandler={this.onRouteHandler}
     routeprops = {props}
-
+    handleCreateNewDocument={this.handleCreateNewDocument}
+    handleDocumentDelete={this.handleDocumentDelete}
     /> : <Redirect to="/login"/>
   )
 
+  //This is shows the login page
   showLogIn = () => this.state.loading ? null : (
     this.state.currentUser ? <Redirect to="/profile" /> :
     <Login handleUpdateUser={this.handleUpdateUser} />
   )
 
-  // showEditPage = (props) => {
-  //   return this.state.currentUser? <EditPage routeprops={props} /> : <Redirect to="/login"/>
-  // }
+  //This renders the edit page
+  showEditPage = (props) => {
+    // debugger
+    let handleEditorChange= this.handleEditorChange.bind(this)
+    let id = props.match.params.id
+    let newId= parseInt(id)
+    return <EditPage
+    handleEditorChange={handleEditorChange}
+    docObj= {this.state.currentUser!== null? this.state.currentUser.docs.find(d => {
+      return d.id === newId
+    }
+  ): null}/>
+  }
 
+  //Event handler to handle editor changes
+  handleEditorChange = (htmlVal, docObj) => {
+    // debugger
+    let docId = docObj.id
+    let copyObj =JSON.parse(JSON.stringify(this.state.currentUser))
+    let retDocObjFound = copyObj.docs.find(doc => doc.id === docId)
+    retDocObjFound.data = htmlVal
+          // debugger
+
+
+        fetch(`http://localhost:3001/api/v1/docs/${docId}`,{
+          method : "PUT",
+          headers : {
+            Content_Type : "application/json",
+            Accept : "application/json"
+          },
+          body : JSON.stringify({
+            data : htmlVal
+          })
+        })
+        .then(resp => resp.json())
+        .then(retData => {
+          this.setState({
+           currentUser :  copyObj
+         })
+        })
+
+
+  }
+
+  //This eventhandler for each document open button
   onRouteHandler = (event) => {
-    debugger
+    // debugger
     let docId= event.target.dataset.docId
     let id= parseInt(docId)
-    let selectDocument = this.state.docArr.find(doc => doc.id === id)
+    let docObj = {...this.state.currentUser}
+    let selectDocument = docObj.docs.find(doc => doc.id === id)
     this.setState({
       selectedDocument : selectDocument
-    }, () => console.log(this.state.selectedDocument))
+    })
   }
+
+  //This eventhandler opens a new document
+  handleCreateNewDocument= (event) => {
+
+  return  <Redirect to="/profile/textEditor"/>
+  }
+
+  handleDocumentDelete = (event) => {
+    // console.log(event.target.dataset.documentId)
+    let docId= parseInt(event.target.dataset.documentId)
+
+    let userDocumentObject= {...this.state.currentUser}
+    let foundDoc= userDocumentObject.docs.find(docObj => docObj.id === docId)
+    //
+    userDocumentObject.docs.splice(userDocumentObject.docs.indexOf(foundDoc), 1)
+    // debugger
+
+    let isDocOwneruser = userDocumentObject.user_docs.find(docuser => docuser.has_owner === true && docuser.doc_id === docId)
+
+    if(isDocOwneruser){
+      this.setState({
+        currentUser : userDocumentObject
+      }, () => console.log(this.state.currentUser.docs))
+      this.makeFetchToDeleteDoc(docId)
+    }else{
+      alert("You don't have such permission")
+    }
+
+  }
+
+  makeFetchToDeleteDoc = (id) => {
+    // debugger
+    let nId = id.toString()
+    fetch(`http://localhost:3001/api/v1/docs/${nId}`,{
+      method : "DELETE"
+    }).then(resp => resp.json())
+  }
+
+
 
   render(){
     return (
       <Fragment>
       <Container>
       <Switch>
-        <Route exact path='/profile/:id' render={(props) => {
-          let id = props.match.params.id
-          return <EditPage
-          currentDoc = {this.state.selectedDocument}
-          docObj= {this.state.docArr.find(d => d.id === id)}/>
-        } } />
+        <Route exact path='/profile/:id' render={this.showEditPage} />
         <Route exact path='/profile' render= {(props) =>{
           return this.showProfile(props)
         } }/>
+        <Route exact path="/profile/textEditor" component={EditPage} />
         <Route exact path='/login' render= {this.showLogIn} />
         <Route exact path="/" render={() => <Redirect to="/profile" />} />
         <Route component={NotFound} />

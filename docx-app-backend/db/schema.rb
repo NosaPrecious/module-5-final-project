@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2019_06_26_162432) do
 
   create_table "docs", force: :cascade do |t|
     t.string "filename"
+    t.string "file_path"
     t.string "content_type"
     t.binary "data"
     t.datetime "created_at", null: false

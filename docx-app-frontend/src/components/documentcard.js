@@ -5,11 +5,7 @@ import '../customcss/custom.css'
 import { Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
 
-const DocumentCard= (props) => {
-  // debugger
-   // console.log(props)
-   const{docObj, onRouteHandler} = props
-   // let fileName = docObj.filename.slice(-10)
+const DocumentCard= ({docObj, onRouteHandler, handleDocumentDelete}) => {
 
   return (
     <Fragment>
@@ -17,6 +13,9 @@ const DocumentCard= (props) => {
           <Card className="justify-content-center mycard">
               <Card.Body>
               <Card.Img className="thumbnail" variant="top" src="./thumbnail.png" />
+              <Card.Text>
+                filename: {docObj.filename}
+              </Card.Text>
               <Card.Text>
                 Content Type: {docObj.content_type}
               </Card.Text>
@@ -29,6 +28,8 @@ const DocumentCard= (props) => {
               </Link>
               <Button
               variant="primary"
+              data-document-id = {docObj.id}
+              onClick={handleDocumentDelete}
               >Delete</Button>
               </Card.Body>
             </Card>
