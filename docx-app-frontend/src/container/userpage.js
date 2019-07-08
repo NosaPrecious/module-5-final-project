@@ -3,7 +3,7 @@ import React, {Fragment} from 'react'
 // import UploadFile from '../components/uploadfiles.js'
 import DocumentList from '../container/documentlist.js'
 import SearchBar from '../components/search.js'
-
+import SortBy from '../components/sort.js'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -60,6 +60,9 @@ class UserPage extends React.Component{
               Create new document
               </Button>
           </Link>
+          </Row>
+          <Row>
+            <SortBy />
           </Row>
           <DocumentList
           userObj={this.props.user}

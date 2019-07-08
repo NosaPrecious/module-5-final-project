@@ -5,7 +5,14 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def create
-        byebug
+        username= User.find_by(username: params[:username])
+        if username === nil
+            User.create!([{first_name: params[:firstname], last_name: params[:lastname], email: params[:email], username: params[:username], password: params[:password]}])
+
+          render json: {message: "Successful"}
+        else
+          render json: {message: "Unsuccessful"}
+        end
     end
 
     def profile

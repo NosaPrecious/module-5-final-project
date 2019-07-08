@@ -10,20 +10,34 @@ import ContentEditable from 'react-contenteditable'
 class TextEditor extends React.Component{
   constructor(props){
       super(props)
+      // console.log(props.userdoc)
       debugger
       this.contentEditable = React.createRef()
-      if(this.props.docObj !== undefined){
-      this.state = {html: this.props.docObj!== null? this.props.docObj.data : ""}
+      if(this.props.docObj){
+      this.state = {
+        html: this.props.docObj.data,
+        editable : this.props.userdoc.write_access ? false : true
+      }
     }else{
-      this.state = {html: "<b>Hello <i>World</i></b>"}
+      this.state = {
+        html: "<b>Hello <i>World</i></b>",
+        editable: false
+      }
     }
   }
 
-  handleChange = evt => {
+  handleChange = event => {
     this.setState({
-      html: evt.target.value
-    }, (_) => this.props.handleEditorChange(this.state.html, this.props.docObj));
-  };
+      html: event.target.value
+    }, (_) =>(
+      this.props.docObj !== undefined ? this.props.handleEditorChange(this.state.html, this.props.docObj) : this.props.handleCreateNewDocument(this.contentEditable.current.innerText, this.props.userId)
+
+    )
+  )
+  //debugger
+  console.log(this.contentEditable.current)
+
+};
 
 
 
@@ -35,7 +49,7 @@ class TextEditor extends React.Component{
             className = "my-text-editor"
             innerRef={this.contentEditable}
             html={this.state.html} // innerHTML of the editable div
-            disabled={false}       // use true to disable editing
+            disabled={this.state.editable}       // use true to disable editing
             onChange={this.handleChange} // handle innerHTML change
             tagName='div' // Use a custom HTML tag (uses a div by default)
           />

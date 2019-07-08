@@ -4,7 +4,8 @@ import DocumentCard from '../components/documentcard'
 import '../customcss/custom.css'
 
 const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}) => {
-
+  // console.log(userObj)
+    const{user_docs} = userObj
   // This eventhandler filters the list of document returned
     let filteredDocuments = userObj.docs.filter(doc => doc.filename.includes(searchText))
     return(
@@ -15,6 +16,7 @@ const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}
             return <DocumentCard
                 key={Math.random(10) + docObj.id}
                 docObj={docObj}
+                userDocs={user_docs}
                 onRouteHandler={onRouteHandler}
                 handleDocumentDelete={handleDocumentDelete}
                 />

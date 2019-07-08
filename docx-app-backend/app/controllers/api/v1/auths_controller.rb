@@ -5,6 +5,7 @@ class Api::V1::AuthsController < ApplicationController
       if @user && @user.authenticate(params[:password])
           # user was found
           serialized_user= UserSerializer.new(@user).as_json
+          # (only: [:docs, user_docs: exclude: [:created_at, :updated_at]])
           # byebug
           payload = {userId: @user.id}
           token = encode(payload)

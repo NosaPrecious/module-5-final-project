@@ -1,12 +1,12 @@
 import React, {Fragment} from 'react'
 
 
-function SortBy(){
+const SortBy = (props) => {
   return(
     <Fragment>
-      <div>
 
-      </div>
     </Fragment>
   )
 }
+
+export default SortBy

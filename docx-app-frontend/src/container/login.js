@@ -42,8 +42,13 @@ class Login extends React.Component{
         localStorage.setItem("token", data.token)
       }else{
         alert('incorrect username or password')
+        //Handle redirect to registration page
       }
     })
+  }
+
+  sendfunc = () => {
+    console.log("hello")
   }
 
   render(){
@@ -60,7 +65,8 @@ class Login extends React.Component{
               Username :
               </Form.Label>
               <Col sm="10">
-              <Form.Control type="text"
+              <Form.Control
+              type="text"
               placeholder="Enter Your Username"
               name= "username"
               onChange={this.handleChange}

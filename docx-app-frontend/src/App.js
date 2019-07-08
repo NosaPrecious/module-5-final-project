@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container'
 import Login  from './container/login.js'
 import UserPage from './container/userpage.js'
 import EditPage from './components/texteditor.js'
-// import Registration from './container/register.js'
+import Registration from './container/register.js'
 import NotFound from './container/not_found.js'
 
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
@@ -49,7 +49,6 @@ class App extends React.Component{
   //This redirect the current user to the profile based
   // on if he or she is login or logout
   handleUpdateUser = (currentUser) => {
-    // debugger
     if(currentUser == null){
       this.setState({
       currentUser : currentUser
@@ -80,18 +79,21 @@ class App extends React.Component{
     <Login handleUpdateUser={this.handleUpdateUser} />
   )
 
-  //This renders the edit page
+  //This renders the textEditor page
   showEditPage = (props) => {
-    // debugger
+
     let handleEditorChange= this.handleEditorChange.bind(this)
-    let id = props.match.params.id
-    let newId= parseInt(id)
+    let handleCreateNewDocument= this.handleCreateNewDocument.bind(this)
+    let docId = parseInt(props.match.params.id)
+    const{id} = this.state.currentUser
+    // debugger
     return <EditPage
+    handleCreateNewDocument={handleCreateNewDocument}
     handleEditorChange={handleEditorChange}
-    docObj= {this.state.currentUser!== null? this.state.currentUser.docs.find(d => {
-      return d.id === newId
-    }
-  ): null}/>
+    userId = {id}
+    docObj= {this.state.currentUser.docs.find(d => d.id === docId)}
+    userdoc= {this.state.currentUser.user_docs.find(userDoc => userDoc.doc_id === docId)}
+  />
   }
 
   //Event handler to handle editor changes
@@ -101,9 +103,8 @@ class App extends React.Component{
     let copyObj =JSON.parse(JSON.stringify(this.state.currentUser))
     let retDocObjFound = copyObj.docs.find(doc => doc.id === docId)
     retDocObjFound.data = htmlVal
-          // debugger
 
-
+        //Making a fetch call to update the text in the textEditor
         fetch(`http://localhost:3001/api/v1/docs/${docId}`,{
           method : "PUT",
           headers : {
@@ -120,26 +121,35 @@ class App extends React.Component{
            currentUser :  copyObj
          })
         })
-
-
   }
 
-  //This eventhandler for each document open button
-  onRouteHandler = (event) => {
-    // debugger
-    let docId= event.target.dataset.docId
-    let id= parseInt(docId)
-    let docObj = {...this.state.currentUser}
-    let selectDocument = docObj.docs.find(doc => doc.id === id)
-    this.setState({
-      selectedDocument : selectDocument
-    })
+  //Callback function for my post fetch request
+  // to create a new document
+  replacer = (key, value) =>{
+    if(typeof v === 'object'){
+      //debugger
+        return undefined
+    }
+    return value
   }
 
   //This eventhandler opens a new document
-  handleCreateNewDocument= (event) => {
+  handleCreateNewDocument= (htmlVal, crtUserId) => {
+    debugger
 
-  return  <Redirect to="/profile/textEditor"/>
+      fetch("http://localhost:3001/api/v1/user_docs", {
+        method : "POST",
+        headers : {
+          Content_Type : "application/json",
+          Accept : "application/json"
+        },
+        body: JSON.stringify({
+          user_id : crtUserId,
+          input_text : htmlVal
+        }, this.replacer)
+      })
+      // .then(resp => resp.json())
+      // .then(jsonData => console.log(jsonData))
   }
 
   handleDocumentDelete = (event) => {
@@ -173,6 +183,18 @@ class App extends React.Component{
     }).then(resp => resp.json())
   }
 
+  //This eventhandler for each document open button
+  onRouteHandler = (event) => {
+    // debugger
+    let docId= event.target.dataset.docId
+    let id= parseInt(docId)
+    let docObj = {...this.state.currentUser}
+    let selectDocument = docObj.docs.find(doc => doc.id === id)
+    this.setState({
+      selectedDocument : selectDocument
+    })
+  }
+
 
 
   render(){
@@ -186,6 +208,7 @@ class App extends React.Component{
         } }/>
         <Route exact path="/profile/textEditor" component={EditPage} />
         <Route exact path='/login' render= {this.showLogIn} />
+        <Route exact path='/register_as_user' component={Registration}/>
         <Route exact path="/" render={() => <Redirect to="/profile" />} />
         <Route component={NotFound} />
       </Switch>
