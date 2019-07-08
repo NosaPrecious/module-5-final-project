@@ -56,7 +56,7 @@ class UserPage extends React.Component{
               <Button
               variant="primary"
               className="new_document"
-              onClick={this.props.handleCreateNewDocument}>
+              onClick={this.props.handleOpenNewDocument}>
               Create new document
               </Button>
           </Link>

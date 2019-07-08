@@ -68,10 +68,14 @@ class App extends React.Component{
     docArr={this.state.docArr}
     onRouteHandler={this.onRouteHandler}
     routeprops = {props}
-    handleCreateNewDocument={this.handleCreateNewDocument}
+    handleOpenNewDocument={this.handleOpenNewDocument}
     handleDocumentDelete={this.handleDocumentDelete}
     /> : <Redirect to="/login"/>
   )
+
+  handleOpenNewDocument = (e) => {
+    console.log(e.target)
+  }
 
   //This is shows the login page
   showLogIn = () => this.state.loading ? null : (
@@ -82,14 +86,14 @@ class App extends React.Component{
   //This renders the textEditor page
   showEditPage = (props) => {
 
-    let handleEditorChange= this.handleEditorChange.bind(this)
-    let handleCreateNewDocument= this.handleCreateNewDocument.bind(this)
+    // let handleEditorChange= this.handleEditorChange.bind(this)
+    // let handleCreateNewDocument= this.handleCreateNewDocument.bind(this)
     let docId = parseInt(props.match.params.id)
     const{id} = this.state.currentUser
     // debugger
     return <EditPage
-    handleCreateNewDocument={handleCreateNewDocument}
-    handleEditorChange={handleEditorChange}
+    handleCreateNewDocument={this.handleCreateNewDocument}
+    handleEditorChange={this.handleEditorChange}
     userId = {id}
     docObj= {this.state.currentUser.docs.find(d => d.id === docId)}
     userdoc= {this.state.currentUser.user_docs.find(userDoc => userDoc.doc_id === docId)}
@@ -126,15 +130,17 @@ class App extends React.Component{
   //Callback function for my post fetch request
   // to create a new document
   replacer = (key, value) =>{
-    if(typeof v === 'object'){
-      //debugger
+    debugger
+    if(typeof value === 'object' || typeof value === 'string' || typeof value === 'number'){
+        return value
+      }
         return undefined
-    }
-    return value
+
+
   }
 
   //This eventhandler opens a new document
-  handleCreateNewDocument= (htmlVal, crtUserId) => {
+  handleCreateNewDocument= (htmlVal, crtUserId, fileName) => {
     debugger
 
       fetch("http://localhost:3001/api/v1/user_docs", {
@@ -202,7 +208,7 @@ class App extends React.Component{
       <Fragment>
       <Container>
       <Switch>
-        <Route exact path='/profile/:id' render={this.showEditPage} />
+        <Route exact path='/profile/:id' render={this.state.currentUser?this.showEditPage : null} />
         <Route exact path='/profile' render= {(props) =>{
           return this.showProfile(props)
         } }/>
