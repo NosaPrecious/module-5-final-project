@@ -15,7 +15,6 @@ class UserPage extends React.Component{
 
   constructor(props){
     super(props)
-    // debugger
     this.state ={
       searchText: "",
       sort_value: "",

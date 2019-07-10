@@ -6,7 +6,9 @@ Rails.application.routes.draw do
         resource :docs, only: [:destroy, :put]
         post '/login', to: 'auths#create'
         post '/user_docs', to: 'user_docs#create'
+        post '/permissions', to: 'user_docs#add_permit'
         get '/profile', to: 'users#profile'
+        get '/users', to: 'users#index'
         get '/users/:id', to: 'users#show'
         delete "/docs/:id", to: 'docs#destroy'
         put "/docs/:id", to: 'docs#update'

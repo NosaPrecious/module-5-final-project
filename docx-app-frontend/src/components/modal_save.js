@@ -17,7 +17,6 @@ class SaveFile extends React.Component{
   }
 
   handleClose = (event) => {
-    debugger
     if(event.target === document.getElementsByClassName("close")[0]){
     document.getElementById("myModal").style.display = "none"
     }

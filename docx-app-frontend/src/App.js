@@ -21,7 +21,8 @@ class App extends React.Component{
     this.state={
       currentUser: null,
       selectedDocument: null,
-      loading: true
+      loading: true,
+      redirectProfile : false
     }
   }
 
@@ -37,7 +38,6 @@ class App extends React.Component{
       })
       .then(resp => resp.json())
       .then(data => {
-         // debugger
         this.handleUpdateUser(data)
         this.setState({loading: false})
       })
@@ -90,7 +90,6 @@ class App extends React.Component{
     // let handleCreateNewDocument= this.handleCreateNewDocument.bind(this)
     let docId = parseInt(props.match.params.id)
     const{id} = this.state.currentUser
-    // debugger
     return <EditPage
     handleCreateNewDocument={this.handleCreateNewDocument}
     handleEditorChange={this.handleEditorChange}
@@ -102,7 +101,6 @@ class App extends React.Component{
 
   //Event handler to handle editor changes
   handleEditorChange = (htmlVal, docObj) => {
-    // debugger
     let docId = docObj.id
     let copyObj =JSON.parse(JSON.stringify(this.state.currentUser))
     let retDocObjFound = copyObj.docs.find(doc => doc.id === docId)
@@ -130,7 +128,6 @@ class App extends React.Component{
   //Callback function for my post fetch request
   // to create a new document
   replacer = (key, value) =>{
-    debugger
     if(typeof value === 'object' || typeof value === 'string' || typeof value === 'number'){
         return value
       }
@@ -141,8 +138,6 @@ class App extends React.Component{
 
   //This eventhandler opens a new document
   handleCreateNewDocument= (htmlVal, crtUserId, fileName) => {
-    debugger
-
       fetch("http://localhost:3001/api/v1/user_docs", {
         method : "POST",
         headers : {
@@ -151,11 +146,14 @@ class App extends React.Component{
         },
         body: JSON.stringify({
           user_id : crtUserId,
-          input_text : htmlVal
+          input_text : htmlVal,
+          file_name: fileName
         }, this.replacer)
       })
-      // .then(resp => resp.json())
-      // .then(jsonData => console.log(jsonData))
+      .then(resp => resp.json())
+      .then(jsonData => {
+        this.setState({redirectProfile : true, currentUser: jsonData["user"]}, (_) => this.setState({redirectProfile : false}))
+      })
   }
 
   handleDocumentDelete = (event) => {
@@ -166,7 +164,6 @@ class App extends React.Component{
     let foundDoc= userDocumentObject.docs.find(docObj => docObj.id === docId)
     //
     userDocumentObject.docs.splice(userDocumentObject.docs.indexOf(foundDoc), 1)
-    // debugger
 
     let isDocOwneruser = userDocumentObject.user_docs.find(docuser => docuser.has_owner === true && docuser.doc_id === docId)
 
@@ -182,7 +179,6 @@ class App extends React.Component{
   }
 
   makeFetchToDeleteDoc = (id) => {
-    // debugger
     let nId = id.toString()
     fetch(`http://localhost:3001/api/v1/docs/${nId}`,{
       method : "DELETE"
@@ -191,7 +187,6 @@ class App extends React.Component{
 
   //This eventhandler for each document open button
   onRouteHandler = (event) => {
-    // debugger
     let docId= event.target.dataset.docId
     let id= parseInt(docId)
     let docObj = {...this.state.currentUser}
@@ -204,11 +199,16 @@ class App extends React.Component{
 
 
   render(){
+    if(this.state.redirectProfile){
+      return <Redirect to="/profile" />
+    }
+
+
     return (
       <Fragment>
       <Container>
       <Switch>
-        <Route exact path='/profile/:id' render={this.state.currentUser?this.showEditPage : null} />
+        <Route exact path='/profile/:id' render={this.state.currentUser? this.showEditPage : null} />
         <Route exact path='/profile' render= {(props) =>{
           return this.showProfile(props)
         } }/>

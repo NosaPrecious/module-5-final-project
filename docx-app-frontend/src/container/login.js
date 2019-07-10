@@ -1,7 +1,7 @@
 import React, {Fragment} from 'react'
 import Form  from 'react-bootstrap/Form'
 import Col from  'react-bootstrap/Col'
-// import Row from  'react-bootstrap/Row'
+import Row from  'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import {Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
@@ -35,7 +35,6 @@ class Login extends React.Component{
       })
     }).then(resp => resp.json())
     .then(data => {
-      // debugger
       if(data.authenticated){
 
         this.props.handleUpdateUser(data.user)
@@ -54,50 +53,56 @@ class Login extends React.Component{
   render(){
     return(
       <Fragment>
-        <h2>Welcome to the Login Page</h2>
+        <h2>Login As:</h2>
           <Form
           onSubmit={this.handleLoginSubmit}
           loading={this.props.authenticatingUser}
-          error={this.props.failedLogin}
-          >
-            <Form.Group controlId="formPlaintextUsername">
-              <Form.Label column sm="2">
-              Username :
-              </Form.Label>
-              <Col sm="10">
-              <Form.Control
-              type="text"
-              placeholder="Enter Your Username"
-              name= "username"
-              onChange={this.handleChange}
-              value={this.state.username}
-              />
-              </Col>
+          error={this.props.failedLogin}>
+
+              <Form.Group as={Row} md={6} controlId="formPlaintextUsername">
+                <Form.Label column sm={2}>
+                  Username:
+                </Form.Label>
+                <Col sm={10}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Your Username"
+                    name= "username"
+                    onChange={this.handleChange}
+                    value={this.state.username}
+                  />
+                </Col>
               </Form.Group>
 
-              <Form.Group controlId="formPlaintextPassword">
-                <Form.Label column sm="2">
-                Password :
+              <Form.Group as={Row} md={6} controlId="formPlaintextPassword">
+                <Form.Label column sm={2}>
+                  Password :
                 </Form.Label>
-                <Col sm="10">
-                <Form.Control
-                type="text"
-                placeholder="Password"
-                name="password"
-                onChange={this.handleChange}
-                value={this.state.password}
-                />
+                <Col sm={10}>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={this.handleChange}
+                    value={this.state.password}
+                  />
                 </Col>
-                </Form.Group>
+              </Form.Group>
 
-                <Button variant="primary" type="submit">
-                Submit
-                </Button>
-              </Form>
-              {" -- or -- "}<br/>
-              <Link to={'/register_as_user'}>
-              <Button variant="primary">Register as a new user</Button>
-              </Link>
+              <Form.Group as={Row}>
+                <Col sm={{span: 10, offset: 2}}>
+                  <Button
+                  variant="primary"
+                  type="submit">
+                    Sign as
+                  </Button>
+                  {" -- or -- "}
+                  <Link to={'/register_as_user'}>
+                  <Button variant="primary">Register as a new user</Button>
+                  </Link>
+                </Col>
+            </Form.Group>
+          </Form>
       </Fragment>
     )
   }

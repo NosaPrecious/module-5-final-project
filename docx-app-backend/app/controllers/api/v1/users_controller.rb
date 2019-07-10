@@ -1,5 +1,11 @@
 class Api::V1::UsersController < ApplicationController
 
+  def index
+    @user = User.all
+    user_arr= self.user(@user)
+      render json: user_arr
+  end
+
   def show
       render json: User.find(params[:id]), status: :accepted
     end
@@ -20,6 +26,16 @@ class Api::V1::UsersController < ApplicationController
         payload = decode(token)
         @user = User.find(payload["userId"])
         render json: @user
+    end
+
+    def user(users)
+      arr = []
+          users.map{
+            |user|
+            arr << {:userId => user.id, :firstname => user.first_name, :lastname => user.last_name }
+          }
+
+          return arr
     end
 
 

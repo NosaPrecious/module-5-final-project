@@ -28,13 +28,18 @@
 
 /* my TextEditor */
 .my-text-editor{
-  width: 400px;
-  height: 400px;
+  font-family: 'Pacifico', cursive;
+  font-size: 18px;
+  font-weight:lighter;
+  /* color: white; */
+  width: 800px;
+  height: 800px;
   min-height: 100px;
-  border: 1px dotted #aaa;
-  padding: 5px;
+  border: 1px solid #aaa;
+  padding: 100px;
   resize: both;
   overflow: auto;
+  box-shadow: 10px 10px 10px 3px #a6a6a6;
 }
 
 /* My Save File Modal Box */
@@ -78,11 +83,11 @@
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  padding-left: 70px;
 }
 
 .text-editor-col{
   width: auto;
-  overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+  margin-top: 20px;
 }

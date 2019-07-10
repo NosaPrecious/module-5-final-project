@@ -10,7 +10,6 @@ import ChkBtn from './checkbox'
 const DocumentCard= ({docObj, onRouteHandler, handleDocumentDelete, userDocs}) => {
        let userDoc= userDocs.find(udoc => udoc.doc_id === docObj.id)
        console.log(userDoc.remove_access)
-       // debugger
   return (
     <Fragment>
     <br/>

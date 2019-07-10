@@ -6,23 +6,21 @@ const UploadFile= (props) => {
   let handleUpload = (event) => {
     event.stopPropagation()
     event.preventDefault()
-    // debugger
+
     let uploadedFile= event.target.children[0].files[0]
     fileProcessor(uploadedFile)
 
   }
 
   let fileProcessor = (fileObj) => {
-    // debugger
     if(window.File && window.FileReader && window.Blob){
     let fr = new FileReader()
 
     fr.onload = (frEvent) => {
       // let myBlob= new Blob([frEvent.target.result], {type:"text/plain;charset=utf-8"})
-       // debugger
+
       let myDocContainer = document.querySelector('.myDocList')
         myDocContainer.innerHTML = frEvent.target.result
-      // debugger
     }
       fr.readAsBinaryString(fileObj)
     }else{

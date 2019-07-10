@@ -1,12 +1,13 @@
 import React, {Fragment} from 'react'
 import '../customcss/custom.css'
-// import FormGroup from 'react-bootstrap/FormGroup'
 // import FormControl  from 'react-bootstrap/FormControl'
 import Button  from 'react-bootstrap/Button'
 import { Row, Col } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
 import SaveFile from './modal_save.js'
+import Permission from './permission'
+import PermissionModal from './permission_modal.js'
 
 class TextEditor extends React.Component{
   constructor(props){
@@ -15,7 +16,10 @@ class TextEditor extends React.Component{
       if(this.props.docObj){
       this.state = {
         html: this.props.docObj.data,
-        editable : this.props.userdoc.write_access ? false : true
+        editable : this.props.userdoc.write_access ? false : true,
+        show: false,
+        permittedUserId : null,
+        permittedUser: ""
       }
     }else{
       this.state = {
@@ -27,40 +31,74 @@ class TextEditor extends React.Component{
   }
 
   handleChange = event => {
-    console.log(this.props.docObj)
+    // console.log(this.props.docObj)
     this.setState({
       html: event.target.value
     }, (_) =>(
       this.props.docObj !== undefined ? this.props.handleEditorChange(this.state.html, this.props.docObj) : undefined
     )
   )
-  //debugger
   console.log(this.contentEditable.current)
-
 };
 
+handleModalClick =(userId, firstname, lastname) => {
+    // userId
+    let fullName = `${firstname} ${lastname}`
+    this.setState({
+      permittedUserId : userId,
+      permittedUser: fullName,
+      show: true
+    })
+}
+
+handleClose = (e) => {
+  this.setState({
+    show: false
+  })
+}
+
+handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
+  debugger
+  // console.log(docId, readAccess, writeAccess, permittedUserId)
+
+  let data = {
+    doc_id,read_access, write_access, permitted_userId
+  }
+
+  fetch("http://localhost:3001/api/v1/permissions", {
+    method: "POST",
+    headers: {
+      Content_Type: "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(resp => resp.json())
+  .then(jsonData => console.log(jsonData))
+}
 
 
   render(){
+    // debugger
+    // console.log(this.props)
   return(
     <Fragment>
-      <div style={{marginTop: "10%", marginRight:"50%", marginButtom:"75%",marginLeft: "35%"}}>
-        <Row className="text-editor-row">
-          <Col className="text-editor-col">
-            <Button
-            variant="primary"
-            onClick={(_) => this.props.handleCreateNewDocument(this.state.html, this.props.userId)}
-            disabled={this.props.docObj === undefined? false : true}
-            >{this.props.docObj === undefined? "Save" : "Save Disabled"}</Button>
-          </Col>
-          <Col className="text-editor-col">
-            <SaveFile
-            userId= {this.props.userId}
-            handleCreateNewDocument= {this.props.handleCreateNewDocument}
-            editorText= {this.state.html}
-             />
-          </Col>
-        </Row>
+      <div style={{marginTop: "10%", marginRight:"50%", marginButtom:"75%",marginLeft: "10%"}}>
+        {this.props.userdoc !== undefined?
+          <Permission
+          handleModalClick={this.handleModalClick}
+          crtUserId={this.props.userId}
+           /> : null
+        }
+
+            <PermissionModal
+            show={this.state.show}
+            permittedUser={this.state.permittedUser}
+            permittedUserId={this.state.permittedUserId}
+            docObj={this.props.docObj}
+            handleClose={this.handleClose}
+            handleSaveChanges={this.handleSaveChanges}
+            />
             <ContentEditable
             className = "my-text-editor"
             innerRef={this.contentEditable}
@@ -69,11 +107,28 @@ class TextEditor extends React.Component{
             onChange={this.handleChange} // handle innerHTML change
             tagName='div' // Use a custom HTML tag (uses a div by default)
           />
-         <Link to="/profile">
-          <Button variant="primary">
-          {'<-'} Go back to profile
-          </Button>
-         </Link>
+          <Row></Row>
+          <Row className="text-editor-row">
+            {this.props.docObj === undefined?
+            <Col className="text-editor-col">
+              <SaveFile
+              userId= {this.props.userId}
+              handleCreateNewDocument= {this.props.handleCreateNewDocument}
+              editorText= {this.state.html}
+               />
+            </Col>
+            : null}
+            <Col>
+            <Link to="/profile">
+             <Button variant="primary"
+             className="text-editor-col"
+             >
+             {'<-'} Go back to profile
+             </Button>
+            </Link>
+            </Col>
+          </Row>
+
       </div>
     </Fragment>
   )
