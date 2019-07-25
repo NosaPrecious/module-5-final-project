@@ -1,20 +1,17 @@
-#root{
-  padding: 0;
-  margin: 0;
-}
 
 html{
   padding: 0;
   margin: 0;
+  overflow: hidden;
   height: 100vh;
   font-family: 'Indie Flower', cursive;
 }
 
-body {
+/* body {
   margin: 0;
   padding: 0;
   height: 100vh;
-}
+} */
 
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

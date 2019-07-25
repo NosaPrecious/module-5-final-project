@@ -13,20 +13,20 @@ const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}
     let filteredDocuments = userObj.docs.filter(doc => doc.filename.includes(searchText))
     return(
       <Fragment>
-      <Container fluid={true} as={"div"}>
-        <CardGroup>
-          {filteredDocuments.length !== 0? filteredDocuments.map(docObj => {
-            return <DocumentCard
-                key={Math.random(10) + docObj.id}
-                docObj={docObj}
-                userDocs={user_docs}
-                onRouteHandler={onRouteHandler}
-                handleDocumentDelete={handleDocumentDelete}
-                />
-          }) : <p>Currently, you have no document, please click the create button to make a new one</p>}
+        <Container fluid={true} as={"div"}>
 
-        </CardGroup>
-      </Container>
+            <CardGroup as={"div"}>
+              {filteredDocuments.length !== 0? filteredDocuments.map(docObj => {
+                return <DocumentCard
+                    key={Math.random(10) + docObj.id}
+                    docObj={docObj}
+                    userDocs={user_docs}
+                    onRouteHandler={onRouteHandler}
+                    handleDocumentDelete={handleDocumentDelete}
+                    />
+              }) : <p>Currently, you have no document, please click the create button to make a new one</p>}
+            </CardGroup>
+        </Container>
       </Fragment>
     )
   }

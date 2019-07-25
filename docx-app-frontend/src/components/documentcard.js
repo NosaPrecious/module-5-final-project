@@ -12,10 +12,9 @@ const DocumentCard= ({docObj, onRouteHandler, handleDocumentDelete, userDocs}) =
        // console.log(userDoc.remove_access)
   return (
     <Fragment>
-        <Col>
+      <Col md={"auto"}>
           <Card
           as={"div"}
-          lg={"auto"}
           bg="light"
           border="primary"
           style={{width: '18rem', marginTop: '10px'}}>
@@ -49,7 +48,7 @@ const DocumentCard= ({docObj, onRouteHandler, handleDocumentDelete, userDocs}) =
               </Button>
               </Card.Body>
             </Card>
-            </Col>
+      </Col>
     </Fragment>
   )
 }

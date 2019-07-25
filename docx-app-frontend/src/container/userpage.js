@@ -33,43 +33,47 @@ class UserPage extends React.Component{
 
     return(
       <Fragment>
-        <h4>Welcome {this.props.user.first_name}</h4><br/>
         <Container expand="lg">
-          <Row>
-            <Col>
-            <Logout
-            handleUpdateUser={this.props.handleUpdateUser}
-             />
-            </Col>
-          </Row>
-          <Row style={{marginTop:'10px'}}>
-          <Col xs md={8}>
-          <Link to="/profile/textEditor">
-              <Button
-              variant="primary"
-              className="new_document"
-              onClick={this.props.handleOpenNewDocument}>
-              Create new document
-              </Button>
-          </Link>
-          </Col>
-          <Col>
-          <SearchBar
-            onSearchHandler={this.onSearchHandler}
-            value={this.state.searchText}
-           />
-          </Col>
-          </Row>
-          <Row>
-            <SortBy />
-          </Row>
-          <DocumentList
-          userObj={this.props.user}
-          onRouteHandler={this.props.onRouteHandler}
-          searchText={this.state.searchText}
-          handleDocumentDelete={this.props.handleDocumentDelete}
-          /><br/>
-        </Container>
+                <Row noGutters={true} style={{marginBottom: 20, marginTop: 20}}>
+                  <Col md={4}>
+                    <h4 style={{margin:0, padding:0, textAlign: "left"}}>
+                    Welcome {this.props.user.first_name}
+                    </h4>
+                  </Col>
+                  <Col md={8} style={{textAlign: "right"}}>
+                      <Logout
+                      handleUpdateUser={this.props.handleUpdateUser}
+                       />
+                  </Col>
+                </Row>
+                <Row noGutters={true}>
+                    <Col xs md="auto">
+                      <Link to="/profile/textEditor">
+                        <Button
+                        variant="primary"
+                        className="new_document"
+                        onClick={this.props.handleOpenNewDocument}>
+                        Create new document
+                        </Button>
+                      </Link>
+                    </Col>
+                    <Col xs md={4} style={{marginLeft: 525}}>
+                      <SearchBar
+                        onSearchHandler={this.onSearchHandler}
+                        value={this.state.searchText}
+                      />
+                    </Col>
+                </Row>
+                <Row>
+                  <SortBy />
+                </Row>
+            </Container>
+                    <DocumentList
+                    userObj={this.props.user}
+                    onRouteHandler={this.props.onRouteHandler}
+                    searchText={this.state.searchText}
+                    handleDocumentDelete={this.props.handleDocumentDelete}
+                    />
       </Fragment>
     )
   }
