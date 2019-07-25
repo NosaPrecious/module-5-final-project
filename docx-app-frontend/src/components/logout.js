@@ -14,7 +14,7 @@ let handleClick= (event) =>{
   return (
     <Fragment>
       <Button
-      variant="primary"
+      variant="danger"
       onClick={handleClick}
       >Logout</Button>
     </Fragment>

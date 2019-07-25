@@ -14,6 +14,7 @@ const CheckBtn = ({name, value}) => {
             id={`my${type}`}
             label={name}
             defaultChecked={value}
+            disabled
           />
         </div>
       ))}

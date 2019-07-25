@@ -19,13 +19,13 @@ class Api::V1::UserDocsController < ApplicationController
       @users = Doc.find(params[:doc_id]).users
 
       if !@user.present?
-        byebug
+        # byebug
         UserDoc.create!([{user_id: params[:permitted_userId], doc_id: params[:doc_id], has_owner: true, read_access: params[:read_access], write_access: params[:write_access], modify_access: false, remove_access: false}])
 
         render json: {message: "permission created successfully!"}
 
       else
-          byebug
+          # byebug
       end
   end
 

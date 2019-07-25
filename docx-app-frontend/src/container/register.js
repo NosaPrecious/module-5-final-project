@@ -4,6 +4,7 @@ import Row from  'react-bootstrap/Row'
 import Col from  'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import {Link, Redirect} from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
 
 class Register extends React.Component{
 
@@ -68,107 +69,114 @@ class Register extends React.Component{
   render(){
     return(
       <Fragment>
-        <h2>Registration as a new user</h2>
-        <Form onSubmit={this.handleRegisterUser}>
-          <Form.Group as={Row} controlId="formHorizontalFirstname">
-            <Form.Label column sm= {2}>
-              Firstname:
+      <Container as={"div"} className="register-outer-div">
+        <Container as={"div"} className="register-inner-div">
+          <Row>
+            <Col>
+              <h2>Register as a new user</h2>
+            </Col>
+          </Row>
+
+          <Form onSubmit={this.handleRegisterUser}>
+            <Form.Group as={Row} controlId="formHorizontalFirstname">
+              <Form.Label column sm= {2}>
+                Firstname:
+                </Form.Label>
+                  <Col sm={4}>
+                    <Form.Control
+                      size="sm"
+                      type="text"
+                      ref= {this.regPage}
+                      placeholder="Enter Your Firstname"
+                      onChange={this.handleChange}
+                      name = "firstname"
+                      value= {this.state.firstname}
+                    />
+                  </Col>
+            </Form.Group>
+
+            <Form.Group as={Row} controlId="FormHorizontalLastname">
+              <Form.Label column sm={2}>
+                Lastname:
               </Form.Label>
-                <Col sm={10}>
+                <Col sm={4}>
                   <Form.Control
                     size="sm"
                     type="text"
-                    ref= {this.regPage}
-                    placeholder="Enter Your Firstname"
+                    placeholder="Enter Your Lastname"
                     onChange={this.handleChange}
-                    name = "firstname"
-                    value= {this.state.firstname}
+                    name = "lastname"
+                    value= {this.state.lastname}
                   />
                 </Col>
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group as={Row} controlId="FormHorizontalLastname">
-            <Form.Label column sm={2}>
-              Lastname:
-            </Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  size="sm"
-                  type="text"
-                  placeholder="Enter Your Lastname"
-                  onChange={this.handleChange}
-                  name = "lastname"
-                  value= {this.state.lastname}
-                />
-              </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formHorizontalEmail">
-            <Form.Label column sm={2}>
-              Email:
-            </Form.Label>
-            <Col sm={10}>
-                <Form.Control
-                  size="sm"
-                  type="text"
-                  placeholder="Enter Your Email"
-                  onChange={this.handleChange}
-                  name = "email"
-                  value= {this.state.email}
-                />
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formHorizontalUsername">
-            <Form.Label column sm={2}>
-              Username:
-            </Form.Label>
-            <Col sm={10}>
+            <Form.Group as={Row} controlId="formHorizontalEmail">
+              <Form.Label column sm={2}>
+                Email:
+              </Form.Label>
+              <Col sm={4}>
                   <Form.Control
                     size="sm"
                     type="text"
-                    placeholder="Enter Your Username"
+                    placeholder="Enter Your Email"
                     onChange={this.handleChange}
-                    name = "username"
-                    value= {this.state.username}
+                    name = "email"
+                    value= {this.state.email}
                   />
-            </Col>
-          </Form.Group>
-
-          <Form.Group as={Row} controlId="formHorizontalPassword">
-            <Form.Label column sm={2}>
-              Password:
-            </Form.Label>
-              <Col sm={10}>
-                <Form.Control
-                  size="sm"
-                  type="password"
-                  placeholder="Password"
-                  onChange={this.handleChange}
-                  name = "password"
-                  value= {this.state.password}
-                />
               </Col>
-          </Form.Group>
+            </Form.Group>
 
-          <Form.Group as={Row}>
-            <Col sm={{span:10, offset: 2}}>
-              <Button
-                variant="primary"
-                type="submit">
-                Submit
-              </Button>
-              {"  -- or --  "}
-              <Link to={'/login'}>
-              <Button variant="primary">
-              Go Back to login
-              </Button>
-              </Link>
-            </Col>
-          </Form.Group>
-        </Form>
+            <Form.Group as={Row} controlId="formHorizontalUsername">
+              <Form.Label column sm={2}>
+                Username:
+              </Form.Label>
+              <Col sm={4}>
+                    <Form.Control
+                      size="sm"
+                      type="text"
+                      placeholder="Enter Your Username"
+                      onChange={this.handleChange}
+                      name = "username"
+                      value= {this.state.username}
+                    />
+              </Col>
+            </Form.Group>
 
+            <Form.Group as={Row} controlId="formHorizontalPassword">
+              <Form.Label column sm={2}>
+                Password:
+              </Form.Label>
+                <Col sm={4}>
+                  <Form.Control
+                    size="sm"
+                    type="password"
+                    placeholder="Password"
+                    onChange={this.handleChange}
+                    name = "password"
+                    value= {this.state.password}
+                  />
+                </Col>
+            </Form.Group>
 
+            <Form.Group as={Row}>
+              <Col sm={{span:10, offset: 1}}>
+                <Button
+                  variant="primary"
+                  type="submit">
+                  Submit
+                </Button>
+                {"  -- or --  "}
+                <Link to={'/login'}>
+                <Button variant="primary">
+                Go Back to login
+                </Button>
+                </Link>
+              </Col>
+            </Form.Group>
+          </Form>
+          </Container>
+        </Container>
       </Fragment>
     )
   }

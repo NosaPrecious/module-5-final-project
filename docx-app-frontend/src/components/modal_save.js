@@ -41,7 +41,7 @@ class SaveFile extends React.Component{
       <div
       id="myModal"
       className="modal">
-        <div className="modal-content">
+        <div className="modal-content" id="modal-save">
           <span
           className="close"
           onClick={this.handleClose}
@@ -53,6 +53,7 @@ class SaveFile extends React.Component{
             name = "filename"
             onChange={this.handleChange}
             />
+            <br/>
             <Button
             variant="primary"
             onClick={(_) => this.props.handleCreateNewDocument(this.props.editorText, this.props.userId, this.state.fileName)}>

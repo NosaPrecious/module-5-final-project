@@ -29,13 +29,11 @@ class UserPage extends React.Component{
     })
   }
 
-
-
   render(){
 
     return(
       <Fragment>
-        Welcome {this.props.user.first_name}<br/>
+        <h4>Welcome {this.props.user.first_name}</h4><br/>
         <Container expand="lg">
           <Row>
             <Col>
@@ -43,14 +41,9 @@ class UserPage extends React.Component{
             handleUpdateUser={this.props.handleUpdateUser}
              />
             </Col>
-            <Col>
-            <SearchBar
-              onSearchHandler={this.onSearchHandler}
-              value={this.state.searchText}
-             />
-            </Col>
           </Row>
-          <Row>
+          <Row style={{marginTop:'10px'}}>
+          <Col xs md={8}>
           <Link to="/profile/textEditor">
               <Button
               variant="primary"
@@ -59,6 +52,13 @@ class UserPage extends React.Component{
               Create new document
               </Button>
           </Link>
+          </Col>
+          <Col>
+          <SearchBar
+            onSearchHandler={this.onSearchHandler}
+            value={this.state.searchText}
+           />
+          </Col>
           </Row>
           <Row>
             <SortBy />

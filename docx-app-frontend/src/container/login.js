@@ -1,14 +1,16 @@
 import React, {Fragment} from 'react'
+import Container from 'react-bootstrap/Container'
 import Form  from 'react-bootstrap/Form'
 import Col from  'react-bootstrap/Col'
 import Row from  'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
 import {Link} from 'react-router-dom'
 import {withRouter} from 'react-router'
+import '../customcss/custom.css'
 
 class Login extends React.Component{
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state= {
       username: "",
       password: ""
@@ -53,56 +55,69 @@ class Login extends React.Component{
   render(){
     return(
       <Fragment>
-        <h2>Login As:</h2>
-          <Form
-          onSubmit={this.handleLoginSubmit}
-          loading={this.props.authenticatingUser}
-          error={this.props.failedLogin}>
+        <Container as={"div"} className="outer-div">
+        <Container as={"div"} className="login-div">
+          <Row>
+            <Col>
+            <h2>Login As:</h2>
+            </Col>
+          </Row>
+          <Row>
+              <Col>
+                <Form
+                  className="login-form"
+                  onSubmit={this.handleLoginSubmit}
+                  loading={this.props.authenticatingUser}
+                  error={this.props.failedLogin}>
 
-              <Form.Group as={Row} md={6} controlId="formPlaintextUsername">
-                <Form.Label column sm={2}>
-                  Username:
-                </Form.Label>
-                <Col sm={10}>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter Your Username"
-                    name= "username"
-                    onChange={this.handleChange}
-                    value={this.state.username}
-                  />
-                </Col>
-              </Form.Group>
+                    <Form.Group as={Row} md={12} controlId="formPlaintextUsername">
+                      <Form.Label column sm={3}>
+                        Username:
+                      </Form.Label>
+                      <Col sm={9}>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Your Username"
+                          name= "username"
+                          onChange={this.handleChange}
+                          value={this.state.username}
+                        />
+                      </Col>
+                    </Form.Group>
 
-              <Form.Group as={Row} md={6} controlId="formPlaintextPassword">
-                <Form.Label column sm={2}>
-                  Password :
-                </Form.Label>
-                <Col sm={10}>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    onChange={this.handleChange}
-                    value={this.state.password}
-                  />
-                </Col>
-              </Form.Group>
+                    <Form.Group as={Row} md={12} controlId="formPlaintextPassword">
+                      <Form.Label column sm={3}>
+                        Password :
+                      </Form.Label>
+                      <Col sm={9}>
+                        <Form.Control
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          onChange={this.handleChange}
+                          value={this.state.password}
+                        />
+                      </Col>
+                    </Form.Group>
 
-              <Form.Group as={Row}>
-                <Col sm={{span: 10, offset: 2}}>
-                  <Button
-                  variant="primary"
-                  type="submit">
-                    Sign as
-                  </Button>
-                  {" -- or -- "}
-                  <Link to={'/register_as_user'}>
-                  <Button variant="primary">Register as a new user</Button>
-                  </Link>
-                </Col>
-            </Form.Group>
-          </Form>
+                    <Form.Group as={Row}>
+                      <Col sm={{span: 40, offset: 2}}>
+                        <Button
+                        variant="primary"
+                        type="submit">
+                          Sign as
+                        </Button>
+                        {" -- or -- "}
+                        <Link to={'/register_as_user'}>
+                        <Button variant="secondary">Register as a new user</Button>
+                        </Link>
+                        </Col>
+                  </Form.Group>
+                </Form>
+              </Col>
+            </Row>
+          </Container>
+        </Container>
       </Fragment>
     )
   }

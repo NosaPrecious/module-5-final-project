@@ -3,6 +3,9 @@ import CardGroup from 'react-bootstrap/CardGroup'
 import DocumentCard from '../components/documentcard'
 import '../customcss/custom.css'
 
+import Container from 'react-bootstrap/Container'
+
+
 const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}) => {
   // console.log(userObj)
     const{user_docs} = userObj
@@ -10,8 +13,8 @@ const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}
     let filteredDocuments = userObj.docs.filter(doc => doc.filename.includes(searchText))
     return(
       <Fragment>
-        This is the Document List Page
-        <CardGroup className="myDocList">
+      <Container fluid={true} as={"div"}>
+        <CardGroup>
           {filteredDocuments.length !== 0? filteredDocuments.map(docObj => {
             return <DocumentCard
                 key={Math.random(10) + docObj.id}
@@ -23,7 +26,7 @@ const DocumentList = ({onRouteHandler, userObj, searchText,handleDocumentDelete}
           }) : <p>Currently, you have no document, please click the create button to make a new one</p>}
 
         </CardGroup>
-
+      </Container>
       </Fragment>
     )
   }

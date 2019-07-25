@@ -2,7 +2,7 @@ import React, {Fragment} from 'react'
 import '../customcss/custom.css'
 // import FormControl  from 'react-bootstrap/FormControl'
 import Button  from 'react-bootstrap/Button'
-import { Row, Col } from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
 import SaveFile from './modal_save.js'
@@ -23,7 +23,7 @@ class TextEditor extends React.Component{
       }
     }else{
       this.state = {
-        html: "<b>Hello <i>World</i></b>",
+        html: "",
         fileName : "",
         editable: false
       }
@@ -80,45 +80,53 @@ handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
 
   render(){
     // debugger
-    // console.log(this.props)
+    console.log(this.props)
   return(
     <Fragment>
-      <div style={{marginTop: "10%", marginRight:"50%", marginButtom:"75%",marginLeft: "10%"}}>
-        {this.props.userdoc !== undefined?
-          <Permission
-          handleModalClick={this.handleModalClick}
-          crtUserId={this.props.userId}
-           /> : null
-        }
-
-            <PermissionModal
-            show={this.state.show}
-            permittedUser={this.state.permittedUser}
-            permittedUserId={this.state.permittedUserId}
-            docObj={this.props.docObj}
-            handleClose={this.handleClose}
-            handleSaveChanges={this.handleSaveChanges}
-            />
-            <ContentEditable
-            className = "my-text-editor"
-            innerRef={this.contentEditable}
-            html={this.state.html} // innerHTML of the editable div
-            disabled={this.state.editable}       // use true to disable editing
-            onChange={this.handleChange} // handle innerHTML change
-            tagName='div' // Use a custom HTML tag (uses a div by default)
-          />
-          <Row></Row>
+      <Container fluid as={"div"} id="text-editor-container">
+        <Row noGutters={true}>
+              <Col md={{span : 2, offset : 2}}>
+              {this.props.userdoc === undefined && this.props.docObj === undefined? null
+              : this.props.userdoc.has_owner? <Permission
+              handleModalClick={this.handleModalClick}
+              crtUserId={this.props.userId}
+               /> : null
+             }
+            </Col>
+            <Col>
+                <PermissionModal
+                show={this.state.show}
+                permittedUser={this.state.permittedUser}
+                permittedUserId={this.state.permittedUserId}
+                docObj={this.props.docObj}
+                handleClose={this.handleClose}
+                handleSaveChanges={this.handleSaveChanges}
+                />
+            </Col>
+        </Row>
+        <Row noGutters={true}>
+            <Col lg={true}>
+              <ContentEditable
+              className = "my-text-editor"
+              innerRef={this.contentEditable}
+              html={this.state.html} // innerHTML of the editable div
+              disabled={this.state.editable}       // use true to disable editing
+              onChange={this.handleChange} // handle innerHTML change
+              tagName='div' // Use a custom HTML tag (uses a div by default)
+              />
+            </Col>
+          </Row>
           <Row className="text-editor-row">
             {this.props.docObj === undefined?
-            <Col className="text-editor-col">
+            <Col sm={{span : 2, offset: 2}} style={{marginBottom: "10px"}}>
               <SaveFile
               userId= {this.props.userId}
               handleCreateNewDocument= {this.props.handleCreateNewDocument}
               editorText= {this.state.html}
-               />
+            />
             </Col>
             : null}
-            <Col>
+            <Col sm={{span : 2, offset:3}}>
             <Link to="/profile">
              <Button variant="primary"
              className="text-editor-col"
@@ -129,7 +137,7 @@ handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
             </Col>
           </Row>
 
-      </div>
+      </Container>
     </Fragment>
   )
 }
