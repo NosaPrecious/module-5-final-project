@@ -52,7 +52,7 @@ class PermissionModal extends React.Component{
                             id="write-access"
                             name="writeAccess"
                             onChange={this.handleChangeChkbx}
-                            />
+                          />
                         </div>
                       ))}
                     </Form>

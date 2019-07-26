@@ -3,7 +3,7 @@ import '../customcss/custom.css'
 // import FormControl  from 'react-bootstrap/FormControl'
 import Button  from 'react-bootstrap/Button'
 import { Container, Row, Col } from 'reactstrap'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import ContentEditable from 'react-contenteditable'
 import SaveFile from './modal_save.js'
 import Permission from './permission'
@@ -19,7 +19,8 @@ class TextEditor extends React.Component{
         editable : this.props.userdoc.write_access ? false : true,
         show: false,
         permittedUserId : null,
-        permittedUser: ""
+        permittedUser: "",
+        redirectModal: false
       }
     }else{
       this.state = {
@@ -58,7 +59,7 @@ handleClose = (e) => {
 }
 
 handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
-  debugger
+  // debugger
   // console.log(docId, readAccess, writeAccess, permittedUserId)
 
   let data = {
@@ -74,26 +75,48 @@ handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
     body: JSON.stringify(data)
   })
   .then(resp => resp.json())
-  .then(jsonData => console.log(jsonData))
+  .then(jsonData => {
+    console.log(jsonData)
+    this.setState({
+      redirectModal: true
+    }, (_) => this.setState({redirectModal: false}))
+  })
 }
 
 
   render(){
     // debugger
     console.log(this.props)
+    if(this.state.redirectModal){
+      // debugger
+      return <Redirect to="/profile"/>
+    }
   return(
     <Fragment>
       <Container fluid as={"div"} id="text-editor-container">
         <Row noGutters={true}>
+              {
+                  this.props.docObj === undefined?
+                <Col sm={"auto"} style={{marginTop:20, marginLeft: 120}}>
+                  <SaveFile
+                  userId= {this.props.userId}
+                  handleCreateNewDocument= {this.props.handleCreateNewDocument}
+                  editorText= {this.state.html}
+                />
+                </Col>
+                : null
+              }
+
               <Col md={{span : 2, offset : 2}}>
-              {this.props.userdoc === undefined && this.props.docObj === undefined? null
-              : this.props.userdoc.has_owner? <Permission
-              handleModalClick={this.handleModalClick}
-              crtUserId={this.props.userId}
-               /> : null
-             }
-            </Col>
-            <Col>
+                  {
+                      this.props.userdoc === undefined && this.props.docObj === undefined? null
+                    : this.props.userdoc.has_owner && this.props.userdoc.modify_access? <Permission
+                    handleModalClick={this.handleModalClick}
+                    crtUserId={this.props.userId}
+                     /> : null
+                  }
+              </Col>
+              <Col>
                 <PermissionModal
                 show={this.state.show}
                 permittedUser={this.state.permittedUser}
@@ -102,9 +125,9 @@ handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
                 handleClose={this.handleClose}
                 handleSaveChanges={this.handleSaveChanges}
                 />
-            </Col>
+              </Col>
         </Row>
-        <Row noGutters={true}>
+        <Row noGutters={true} style={{marginTop: 20}}>
             <Col lg={true}>
               <ContentEditable
               className = "my-text-editor"
@@ -116,17 +139,8 @@ handleSaveChanges= (doc_id,read_access, write_access, permitted_userId) => {
               />
             </Col>
           </Row>
-          <Row className="text-editor-row">
-            {this.props.docObj === undefined?
-            <Col sm={{span : 2, offset: 2}} style={{marginBottom: "10px"}}>
-              <SaveFile
-              userId= {this.props.userId}
-              handleCreateNewDocument= {this.props.handleCreateNewDocument}
-              editorText= {this.state.html}
-            />
-            </Col>
-            : null}
-            <Col sm={{span : 2, offset:3}}>
+          <Row noGutters={true}>
+            <Col sm={{span : 2}} style={{marginLeft: 120}}>
             <Link to="/profile">
              <Button variant="primary"
              className="text-editor-col"
